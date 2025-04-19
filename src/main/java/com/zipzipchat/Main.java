@@ -24,7 +24,6 @@ public class Main {
                 client = new ChatClient();
                 client.connect();
             } catch (URISyntaxException e) {
-                // TODO Auto-generated catch block
                 System.out.println("erro");
                 e.printStackTrace();
             }
