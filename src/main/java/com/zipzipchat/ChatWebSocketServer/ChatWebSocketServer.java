@@ -26,7 +26,6 @@ public class ChatWebSocketServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket arg0, ClientHandshake arg1) {
-        // TODO Auto-generated method stub
         clients.put(arg0, "");
         System.out.println("Nova conexão de " + getHostNameBy(arg0));
     }
@@ -39,7 +38,7 @@ public class ChatWebSocketServer extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket arg0, String arg1) {
-        System.out.println("Mensagem recebida de" + getHostAdressBy(arg0) + ":" + arg1);
+        System.out.println("Mensagem recebida de " + getHostAdressBy(arg0) + ":" + arg1);
     }
 
     @Override

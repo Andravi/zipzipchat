@@ -7,7 +7,7 @@ import com.zipzipchat.ChatClient.ChatClient;
 import com.zipzipchat.ChatWebSocketServer.ChatWebSocketServer;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Scanner reader = new Scanner(System.in);
 
         System.out.println("Iniciando Chat, 0 -> Server 1 -> Cliente");

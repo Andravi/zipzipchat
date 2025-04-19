@@ -9,6 +9,7 @@ import org.java_websocket.handshake.ServerHandshake;
 public class ChatClient {
 
   WebSocketClient webClient;
+  Boolean isConnected;
   String uri;
 
   public ChatClient() throws URISyntaxException {
@@ -24,6 +25,7 @@ public class ChatClient {
       @Override
       public void onOpen(ServerHandshake handshake) {
         System.out.println("You are connected to ChatServer: " + getURI() + "\n");
+        isConnected = true; // Sinaliza que a conexão está pronta
       }
 
       @Override
@@ -40,8 +42,10 @@ public class ChatClient {
     };
   }
 
-  public void connect() {
+  public void connect() throws InterruptedException {
     webClient.connect(); // Inicia a conexão
+    Thread.sleep(2000);
+    webClient.send("Its working!!!!");
   }
 
 }
