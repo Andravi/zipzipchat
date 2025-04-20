@@ -2,6 +2,7 @@ package com.zipzipchat.ChatClient;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Scanner;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -43,9 +44,44 @@ public class ChatClient {
   }
 
   public void connect() throws InterruptedException {
-    webClient.connect(); // Inicia a conexão
-    Thread.sleep(2000);
-    webClient.send("Its working!!!!");
+    this.webClient.connectBlocking();
+
+    try (Scanner scanner = new Scanner(System.in)) {
+      System.out.println("Servidor iniciado. Comandos: [stop] [status] [exit]");
+      while (true) {
+        String input = scanner.nextLine().trim().toLowerCase();
+
+        switch (input) {
+          case "stop":
+            this.webClient.close();
+            System.out.println("Servidor parado");
+            System.exit(0);
+            break;
+ 
+          case "mensagem":
+            System.out.println("Mandando mensagem: 'Coe'");
+            String message = "Coe";
+            this.sendMessage(message);
+            break;
+
+          case "exit":
+            this.webClient.close();
+            System.exit(0);
+            break;
+
+          default:
+            System.out.println("Comando inválido");
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    // webClient.send("Its working!!!!");
+  }
+
+  private void sendMessage(String message) {
+    this.webClient.send(message);
   }
 
 }

@@ -1,6 +1,7 @@
 package com.zipzipchat.ChatWebSocketServer;
 
 import java.net.InetSocketAddress;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.java_websocket.WebSocket;
@@ -10,30 +11,32 @@ import org.java_websocket.server.WebSocketServer;
 public class ChatWebSocketServer extends WebSocketServer {
 
     private ConcurrentHashMap<WebSocket, String> clients = new ConcurrentHashMap<>();
+    private int numberOfClientsOn = 0;
 
     private String getHostNameBy(WebSocket webSocket) {
         return webSocket.getLocalSocketAddress().getAddress().getHostName();
     }
 
-    
     private String getHostAdressBy(WebSocket webSocket) {
         return webSocket.getLocalSocketAddress().getAddress().getHostAddress();
     }
 
-    public ChatWebSocketServer(int port) {
-        super(new InetSocketAddress(port));
+    public int getNumberOfClientsOn() {
+        return numberOfClientsOn;
     }
 
     @Override
     public void onOpen(WebSocket arg0, ClientHandshake arg1) {
         clients.put(arg0, "");
         System.out.println("Nova conexão de " + getHostNameBy(arg0));
+        numberOfClientsOn++;
     }
 
     @Override
     public void onClose(WebSocket arg0, int arg1, String arg2, boolean arg3) {
         clients.remove(arg0);
         System.out.println("Conexão fechada para " + getHostNameBy(arg0));
+        numberOfClientsOn--;
     }
 
     @Override
@@ -51,4 +54,58 @@ public class ChatWebSocketServer extends WebSocketServer {
         System.out.println("Servidor iniciado na porta: " + getPort());
     }
 
+    public ChatWebSocketServer(int port) {
+        super(new InetSocketAddress(port));
+    }
+
+    public void startServer() {
+        this.start();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("\nRecebido sinal de desligamento...");
+            try {
+                this.stopServer();
+
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }));
+
+        System.out.println("Servidor iniciado. Comandos: [stop] [status] [exit]");
+
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                String input = scanner.nextLine().trim().toLowerCase();
+
+                switch (input) {
+                    case "stop":
+                        System.out.println("Servidor parado");
+                        this.stopServer();
+                        System.exit(0);
+                        break;
+
+                    case "status":
+                        System.out.println("Clientes conectados: " + this.getNumberOfClientsOn());
+                        break;
+
+                    case "exit":
+                        this.stopServer();
+                        System.exit(0);
+                        break;
+
+                    default:
+                        System.out.println("Comando inválido");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void stopServer() throws InterruptedException {
+        String message = "Fechando server...";
+        System.out.println(message);
+        this.stop(1000, message);
+    }
 }

@@ -9,14 +9,18 @@ import com.zipzipchat.ChatWebSocketServer.ChatWebSocketServer;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         Scanner reader = new Scanner(System.in);
+        // var connections = 0;
 
-        System.out.println("Iniciando Chat, 0 -> Server 1 -> Cliente");
+        System.out.println("""
+                ###Iniciando Chat###
+                0: Server
+                1: Cliente
+                """);
         char option = reader.next().toCharArray()[0];
         if (option == '0') {
             System.out.println("Server");
             ChatWebSocketServer server = new ChatWebSocketServer(8080);
-            server.start();
-
+            server.startServer();
         } else if (option == '1') {
             System.out.println("Cliente");
             ChatClient client;
