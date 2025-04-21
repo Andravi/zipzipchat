@@ -7,6 +7,8 @@ import java.util.Scanner;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class ChatClient {
 
   WebSocketClient webClient;
@@ -61,6 +63,7 @@ public class ChatClient {
           case "mensagem":
             System.out.println("Mandando mensagem: 'Coe'");
             String message = "Coe";
+            // TODO PArse to Json
             this.sendMessage(message);
             break;
 
