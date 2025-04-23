@@ -49,7 +49,7 @@ public class ChatClient {
     this.webClient.connectBlocking();
 
     try (Scanner scanner = new Scanner(System.in)) {
-      System.out.println("Servidor iniciado. Comandos: [stop] [status] [exit]");
+      System.out.println("Servidor iniciado. Comandos: [stop] [mensagem] [exit]");
       while (true) {
         String input = scanner.nextLine().trim().toLowerCase();
 
@@ -61,9 +61,9 @@ public class ChatClient {
             break;
  
           case "mensagem":
-            System.out.println("Mandando mensagem: 'Coe'");
-            String message = "Coe";
             // TODO PArse to Json
+            System.out.print("Digite sua mensagem: ");
+            String message = scanner.nextLine();
             this.sendMessage(message);
             break;
 
