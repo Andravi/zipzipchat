@@ -9,8 +9,8 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 public class ChatWebSocketServer extends WebSocketServer {
-
-    private ConcurrentHashMap<WebSocket, String> clients = new ConcurrentHashMap<>();
+    // Colocar um log
+    private ConcurrentHashMap<WebSocket, String> clients = new ConcurrentHashMap<>(); // Pesquisar o que é esse hashMap
     private int numberOfClientsOn = 0;
 
     private String getHostNameBy(WebSocket webSocket) {
